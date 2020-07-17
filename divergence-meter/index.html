@@ -112,11 +112,11 @@
 			<!-- TODO: Button to link directly to generated image -->
 			<!--<input id="saveButton" name="saveButton" type="button" value="Save Image" tabindex="4"
 				class="meter-button" />-->
-			<button id="share-image-button"  tabindex="5"
-			 	class="meter-button" >Share</button>
+			<!-- <button id="share-image-button"  tabindex="5"
+			 	class="meter-button" >Share</button> -->
 		</div>
 	</form>
-	<!-- <button id="share-image-button" class="meter-button" >Share</button> -->
+	<button id="share-image-button" class="meter-button" >Share</button>
 	<a id="direct-image-download" href="#">download</a>
 	<a href="#" onclick="linkDownload(this, 'meter.png', 'Hello World!');">download</a>
 	<button onclick="download('meter.png', 'Hello World!');">download</button>
@@ -175,11 +175,14 @@
 		let canvas = document.getElementById("meter-canvas");
 		logError('Secure Context', window.isSecureContext);
 		const shareData = {
-			files: Object.freeze([new File(Object.freeze([meterBlob]), 'divergence meter image.png')]),
+			//files: Object.freeze([new File(Object.freeze([meterBlob]), 'meter.png', {type: 'image/png'})]),
+			files: [new File([meterBlob], 'meter.png', {type: 'image/png'})],
 			//title: 'Meter Image',
 			//text: 'divergence meter image.png',
 			// url: document.getElementById("meter-canvas-mirror").src,
 		};
+		logError('canShare', navigator.canShare(shareData));
+		logError('typeof share', typeof navigator.share);
 		let span = document.createElement("p");
 		span.innerText = "[DOWNLOAD 2]: ";
 		try {
