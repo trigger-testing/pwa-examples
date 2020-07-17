@@ -181,8 +181,12 @@
 			//text: 'divergence meter image.png',
 			// url: document.getElementById("meter-canvas-mirror").src,
 		};
-		logError('canShare', navigator.canShare(shareData));
-		logError('typeof share', typeof navigator.share);
+		logError('typeof navigator.canShare', typeof navigator.canShare);
+		if (typeof navigator.canShare !== "undefined") {
+			logError('navigator.canShare', navigator.canShare(shareData));
+		}
+		console.log(shareData);
+		logError('typeof navigator.share', typeof navigator.share);
 		let span = document.createElement("p");
 		span.innerText = "[DOWNLOAD 2]: ";
 		try {
