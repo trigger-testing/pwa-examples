@@ -116,7 +116,7 @@
 			 	class="meter-button" >Share</button>
 		</div>
 	</form>
-	<!-- <button id="direct-image-download-2" >Share</button> -->
+	<!-- <button id="share-image-button" class="meter-button" >Share</button> -->
 	<a id="direct-image-download" href="#">download</a>
 	<a href="#" onclick="linkDownload(this, 'meter.png', 'Hello World!');">download</a>
 	<button onclick="download('meter.png', 'Hello World!');">download</button>
@@ -170,27 +170,25 @@
 	// const resultPara = document.querySelector('.result');
 
 	// Must be triggered some kind of "user activation"
-	shareButton.addEventListener('click', () => {
+	shareButton.addEventListener('click', async () => {
 		logError('Secure Context', window.isSecureContext);
 		let canvas = document.getElementById("meter-canvas");
-		canvas.toBlob(async (blob) => {
-			logError('Secure Context', window.isSecureContext);
-			const shareData = {
-				files: Object.freeze([new File(Object.freeze([blob]), 'divergence meter image.png')]),
-				title: 'Meter Image',
-				text: 'divergence meter image.png',
-				// url: document.getElementById("meter-canvas-mirror").src,
-			};
-			let span = document.createElement("p");
-			span.innerText = "[DOWNLOAD 2]: ";
-			try {
-				await navigator.share(shareData);
-				span.innerText += 'MDN shared successfully';
-			} catch(err) {
-				span.innerText += 'Error: ' + err;
-			}
-			document.getElementById("error-log").prepend(span);
-		}, 'image/png');
+		logError('Secure Context', window.isSecureContext);
+		const shareData = {
+			files: Object.freeze([new File(Object.freeze([meterBlob]), 'divergence meter image.png')]),
+			title: 'Meter Image',
+			text: 'divergence meter image.png',
+			// url: document.getElementById("meter-canvas-mirror").src,
+		};
+		let span = document.createElement("p");
+		span.innerText = "[DOWNLOAD 2]: ";
+		try {
+			await navigator.share(shareData);
+			span.innerText += 'MDN shared successfully';
+		} catch(err) {
+			span.innerText += 'Error: ' + err;
+		}
+		document.getElementById("error-log").prepend(span);
 		// logError('Secure Context', window.isSecureContext);
 	});
 </script>

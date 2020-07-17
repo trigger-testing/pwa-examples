@@ -8,6 +8,7 @@ logError('Secure Context', window.isSecureContext);
 try {
 	var meterCanvas = document.getElementById("meter-canvas");
 	var codeInputForm = document.getElementById("meter-input-form");
+	meterBlob = null;
 
 	function Size(width, height) {
 		if (typeof width === "Size") {
@@ -650,7 +651,13 @@ try {
 		image.height = meterCanvas.height;
 		document.getElementById("meter-canvas-container").classList.add("mirrored");
 				logError("MIRRORED", "");
-		a.href = image.src;
+		// a.href = image.src;
+		meterCanvas.toBlob(function (blob) {
+			meterBlob = blob;
+			logError('typeof blob', typeof blob);
+			logError('blob', blob);
+			//logError('typeof blob', typeof blob);
+		}, "image/png");
 		// document.body.append(image);
 		// image.src = canvas.toDataURL("image/png");
 
