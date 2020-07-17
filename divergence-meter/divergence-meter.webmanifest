@@ -1,0 +1,21 @@
+{
+    "name": "Divergence Meter tool Progressive Web App",
+    "short_name": "Divergence",
+    "description": "Progressive Web App that draws Steins;Gate-style divergence meters.",
+    "icons": [
+        {
+            "src": "icons/icon-32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "icons/icon-256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/pwa-examples/divergence-meter/index.html",
+    "display": "fullscreen",
+    "theme_color": "#00C6D8",
+    "background_color": "#00C6D8"
+}

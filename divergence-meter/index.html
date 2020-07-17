@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Divergence Meter tool</title>
+	<meta name="description" content="A tool for drawing Steins;Gate divergence meter images.">
+	<meta name="author" content="trigger_segfault">
+	<meta name="theme-color" content="#00C6D8">
+	<meta name="viewport" content="width=375, initial-scale=1">
+	<meta name="msapplication-TileColor" content="#00C6D8" />
+	<meta name="msapplication-TileImage" content="./images/icons/mstile-150x150.png" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-title" content="Divergence Meter tool" />
+	<meta name="application-name" content="Divergence Meter tool" />
+	<link rel="apple-touch-icon" href="icons/icon-256.png" />
+	<meta property="og:image" content="icons/icon-256.png">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" href="style.css">
+	<link rel="manifest" href="divergence-meter.webmanifest">
+	<!-- <meta name="theme-color" content="#00C6D8" /> -->
+	<!-- <meta name="msapplication-TileColor" content="#00C6D8" />
+	<meta name="msapplication-TileImage" content="./images/icons/mstile-150x150.png" />
+	<meta name="mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<meta name="apple-mobile-web-app-title" content="Progressive Web Application" />
+	<meta name="application-name" content="Progressive Web Application" />
+	<link rel="apple-touch-icon" href="./images/icons/apple-touch-icon.png" />
+	<link rel="icon" type="image/png" href="./images/icons/favicon-32x32.png" sizes="32x32" />
+	<link rel="icon" type="image/png" href="./images/icons/favicon-16x16.png" sizes="16x16" /> -->
+	<!-- <link rel="manifest" href="./manifest.json" /> -->
+	<!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:200,300,400,500,700" />
+	<link rel="stylesheet" href="./css/styles.css" /> -->
+	<script src="data/games.js" defer></script>
+	<script src="app.js" defer></script>
+	<script type="text/javascript">
+		/*
+		https://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file/39165723#39165723
+		*/
+		function updateDirectDownload() {//, content) {
+			let image = document.getElementById("meter-canvas-mirror");
+			let a = document.getElementById("direct-image-download");
+			let contentType = image.src.substring(0, image.src.indexOf(",")+1);
+			//  "aaaa,yay".substring(0, "aaaa,yay".indexOf(',')+1)
+			// contentType =  'data:application/octet-stream,';
+			a.setAttribute('href', image.src);
+			// a.setAttribute('href', image);
+			// uriContent = contentType + encodeURIComponent(content);
+			// a.setAttribute('href', uriContent);
+			// a.setAttribute('download', filename);
+		}
+		function linkDownload(a, filename) {//, content) {
+			let image = document.getElementById("meter-canvas-mirror");
+			let contentType = image.src.substring(0, image.src.indexOf(",")+1);
+			//  "aaaa,yay".substring(0, "aaaa,yay".indexOf(',')+1)
+			// contentType =  'data:application/octet-stream,';
+			a.setAttribute('href', image.src);
+			// uriContent = contentType + encodeURIComponent(content);
+			// a.setAttribute('href', uriContent);
+			// a.setAttribute('download', filename);
+		}
+		function download(filename) {//, content) {
+			var a = document.createElement('a');
+			linkDownload(a, filename);
+			document.body.appendChild(a);
+			a.click();
+			document.body.removeChild(a);
+		}
+	</script>
+</head>
+<body>
+<!--<header>
+	<h2>Divergence Meter - Creation Tool</h2>
+	<ul id="links-see-also">
+		<li><a href="https://github.com/trigger-segfault/TriggersTools.SteinsGate">TriggersTools.SteinsGate repository</a></li>
+	</ul>
+</header>-->
+<main>
+	<form id="meter-input-form" onsubmit="return false;" target="_self"  class="meter-input-form">
+		<div>
+			<label for="text" title="Meter text" style="display: table-cell;" tabindex="0">Text: </label>
+			<span style="display: table-cell; width: 100%; padding: 4px 28px 4px 4px;">
+				<input id="text" name="text" type="text" value="1.048596"
+					class="meter-input" style="width: 100%;  /*margin: 0;*/" />
+			</span>
+			<span style="display: table-cell;">
+				<img style="vertical-align: middle;" width=32 id="meter-icon" src="data/img/placeholder.png" data-src="icons/icon-32.png" />
+			</span>
+		</div>
+
+		<div>
+			<label for="scale" title="base image scale (multiple of 2)" tabindex="1">Size: </label>
+			<select id="scale" name="scale" class="meter-select">
+				<option value="Large">Large</option>
+				<option value="Medium" selected>Medium</option>
+				<option value="Small">Small</option>
+			</select>
+
+			&nbsp;&nbsp;&nbsp;
+
+			<label for="authentic" title="Use Steins;Gate font for digits and period" tabindex="2">Authentic: </label>
+			<input id="authentic" name="authentic" type="checkbox" checked
+				class="meter-checkbox" />
+			<br/>
+		</div>
+
+		<div>
+			<input id="drawButton" name="drawButton" type="submit" value="Draw" tabindex="3"
+				class="meter-button" />
+			<!-- TODO: Button to link directly to generated image -->
+			<!--<input id="saveButton" name="saveButton" type="button" value="Save Image" tabindex="4"
+				class="meter-button" />-->
+		</div>
+	</form>
+	<button id="direct-image-download-2" >Share</button>
+	<a id="direct-image-download" href="#">download</a>
+	<a href="#" onclick="linkDownload(this, 'meter.png', 'Hello World!');">download</a>
+	<button onclick="download('meter.png', 'Hello World!');">download</button>
+
+	<!-- <label for="meter-canvas-container">Draw Result: </label> -->
+	<div id="meter-canvas-container" class="meter-display container">
+		<div class="meter-display-margin">
+			<canvas id="meter-canvas" class="meter-display canvas"></canvas>
+			<image src="" id="meter-canvas-mirror" class="meter-display mirror" />
+		</div>
+	</div>
+	<br/>
+
+	<label for="error-log">Developer Log: </label>
+	<div id="error-log">
+	</div>
+
+	<div id="image-store" style="height: 1px;"> <!-- style="visibility: hidden; height: 0px"> -->
+		<!-- <image src="data/img/Large/NixieAuthentic.png" id="image-store-Large-Authentic" >
+		<image src="data/img/Large/NixieFontA.png" id="image-store-Large-FontA" >
+		<image src="data/img/Large/NixieFontB.png" id="image-store-Large-FontB" >
+		<image src="data/img/Large/NixieTubeLeft.png" id="image-store-Large-TubeLeft" >
+		<image src="data/img/Large/NixieTubeMid.png" id="image-store-Large-TubeMid" >
+		<image src="data/img/Large/NixieTubeRight.png" id="image-store-Large-TubeRight" >
+		<image src="data/img/Large/NixieTubeSingle.png" id="image-store-Large-TubeSingle" >
+		<image src="data/img/Medium/NixieAuthentic.png" id="image-store-Medium-Authentic" >
+		<image src="data/img/Medium/NixieFontA.png" id="image-store-Medium-FontA" >
+		<image src="data/img/Medium/NixieFontB.png" id="image-store-Medium-FontB" >
+		<image src="data/img/Medium/NixieTubeLeft.png" id="image-store-Medium-TubeLeft" >
+		<image src="data/img/Medium/NixieTubeMid.png" id="image-store-Medium-TubeMid" >
+		<image src="data/img/Medium/NixieTubeRight.png" id="image-store-Medium-TubeRight" >
+		<image src="data/img/Medium/NixieTubeSingle.png" id="image-store-Medium-TubeSingle" >
+		<image src="data/img/Small/NixieAuthentic.png" id="image-store-Small-Authentic" >
+		<image src="data/img/Small/NixieFontA.png" id="image-store-Small-FontA" >
+		<image src="data/img/Small/NixieFontB.png" id="image-store-Small-FontB" >
+		<image src="data/img/Small/NixieTubeLeft.png" id="image-store-Small-TubeLeft" >
+		<image src="data/img/Small/NixieTubeMid.png" id="image-store-Small-TubeMid" >
+		<image src="data/img/Small/NixieTubeRight.png" id="image-store-Small-TubeRight" >
+	  	<image src="data/img/Small/NixieTubeSingle.png" id="image-store-Small-TubeSingle" > -->
+	</div>
+</main>
+<script>
+	
+	const shareData = {
+		title: 'Meter Image',
+		text: 'divergence meter image.png',
+		url: document.getElementById("meter-canvas-mirror").src,
+	};
+
+	const btn = document.getElementById('direct-image-download-2');
+	// const resultPara = document.querySelector('.result');
+
+	// Must be triggered some kind of "user activation"
+	btn.addEventListener('click', async () => {
+		logError('Secure Context', window.isSecureContext);
+		let span = document.createElement("p");
+		span.innerText = "[DOWNLOAD 2]: ";
+		try {
+			await navigator.share(shareData);
+			span.innerText += 'MDN shared successfully';
+		} catch(err) {
+			span.innerText += 'Error: ' + err;
+		}
+		document.getElementById("error-log").prepend(span);
+	});
+</script>
+<!--<footer>
+	<p>&copy; trigger_segfault 2020.</p>
+</footer>-->
+</body>
+</html>
