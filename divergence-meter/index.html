@@ -39,24 +39,25 @@
 		/*
 		https://stackoverflow.com/questions/2897619/using-html5-javascript-to-generate-and-save-a-file/39165723#39165723
 		*/
-		function updateDirectDownload() {//, content) {
-			let image = document.getElementById("meter-canvas-mirror");
-			let a = document.getElementById("direct-image-download");
-			let contentType = image.src.substring(0, image.src.indexOf(",")+1);
-			//  "aaaa,yay".substring(0, "aaaa,yay".indexOf(',')+1)
-			// contentType =  'data:application/octet-stream,';
-			a.setAttribute('href', image.src);
-			// a.setAttribute('href', image);
-			// uriContent = contentType + encodeURIComponent(content);
-			// a.setAttribute('href', uriContent);
-			// a.setAttribute('download', filename);
-		}
+		// function updateDirectDownload() {//, content) {
+		// 	let image = document.getElementById("meter-canvas-mirror");
+		// 	let a = document.getElementById("direct-image-download");
+		// 	let contentType = image.src.substring(0, image.src.indexOf(",")+1);
+		// 	//  "aaaa,yay".substring(0, "aaaa,yay".indexOf(',')+1)
+		// 	// contentType =  'data:application/octet-stream,';
+		// 	a.setAttribute('href', image.src);
+		// 	// a.setAttribute('href', image);
+		// 	// uriContent = contentType + encodeURIComponent(content);
+		// 	// a.setAttribute('href', uriContent);
+		// 	// a.setAttribute('download', filename);
+		// }
 		function linkDownload(a, filename) {//, content) {
 			let image = document.getElementById("meter-canvas-mirror");
-			let contentType = image.src.substring(0, image.src.indexOf(",")+1);
+			a.setAttribute('href', image.src);
+			// let contentType = image.src.substring(0, image.src.indexOf(",")+1);
 			//  "aaaa,yay".substring(0, "aaaa,yay".indexOf(',')+1)
 			// contentType =  'data:application/octet-stream,';
-			a.setAttribute('href', image.src);
+			// a.setAttribute('href', image.src);
 			// uriContent = contentType + encodeURIComponent(content);
 			// a.setAttribute('href', uriContent);
 			// a.setAttribute('download', filename);
@@ -78,6 +79,7 @@
 	</ul>
 </header>-->
 <main>
+
 	<form id="meter-input-form" onsubmit="return false;" target="_self"  class="meter-input-form">
 		<div>
 			<label for="text" title="Meter text" style="display: table-cell;" tabindex="0">Text: </label>
@@ -109,6 +111,12 @@
 		<div>
 			<input id="drawButton" name="drawButton" type="submit" value="Draw" tabindex="3"
 				class="meter-button" />
+			<input id="clearButton" name="clearButton" type="button" value="Clear" tabindex="4"
+				class="meter-button" onclick="clearDrawer(meterCanvas);" />
+			<input id="downloadButton" name="downloadButton" type="button" value="Download" tabindex="5" disabled
+				class="meter-button" onclick="download('divmeter.png');" />
+			<!-- <input id="shareButton" name="shareButton" type="button" value="Share" tabindex="6"
+				class="meter-button" onclick="share('divmeter.png');" /> -->
 			<!-- TODO: Button to link directly to generated image -->
 			<!--<input id="saveButton" name="saveButton" type="button" value="Save Image" tabindex="4"
 				class="meter-button" />-->
@@ -116,49 +124,27 @@
 			 	class="meter-button" >Share</button> -->
 		</div>
 	</form>
-	<button id="share-image-button" class="meter-button" >Share</button>
+	<!-- <button id="share-image-button" class="meter-button" >Share</button>
 	<a id="direct-image-download" href="#">download</a>
 	<a href="#" onclick="linkDownload(this, 'meter.png', 'Hello World!');">download</a>
-	<button onclick="download('meter.png', 'Hello World!');">download</button>
+	<button onclick="download('meter.png', 'Hello World!');">download</button> -->
 
 	<!-- <label for="meter-canvas-container">Draw Result: </label> -->
 	<div id="meter-canvas-container" class="meter-display container">
-		<div class="meter-display-margin">
+		<div id="meter-canvas-anchor" class="meter-display-margin">
 			<canvas id="meter-canvas" class="meter-display canvas"></canvas>
 			<image src="" id="meter-canvas-mirror" class="meter-display mirror" />
 		</div>
 	</div>
 	<br/>
 
-	<label for="error-log">Developer Log: </label>
-	<div id="error-log">
+	<label for="error-log" class="debug-view">Developer Log: </label>
+	<div id="error-log" class="debug-view">
 	</div>
 
-	<div id="image-store" style="height: 1px;"> <!-- style="visibility: hidden; height: 0px"> -->
-		<!-- <image src="data/img/Large/NixieAuthentic.png" id="image-store-Large-Authentic" >
-		<image src="data/img/Large/NixieFontA.png" id="image-store-Large-FontA" >
-		<image src="data/img/Large/NixieFontB.png" id="image-store-Large-FontB" >
-		<image src="data/img/Large/NixieTubeLeft.png" id="image-store-Large-TubeLeft" >
-		<image src="data/img/Large/NixieTubeMid.png" id="image-store-Large-TubeMid" >
-		<image src="data/img/Large/NixieTubeRight.png" id="image-store-Large-TubeRight" >
-		<image src="data/img/Large/NixieTubeSingle.png" id="image-store-Large-TubeSingle" >
-		<image src="data/img/Medium/NixieAuthentic.png" id="image-store-Medium-Authentic" >
-		<image src="data/img/Medium/NixieFontA.png" id="image-store-Medium-FontA" >
-		<image src="data/img/Medium/NixieFontB.png" id="image-store-Medium-FontB" >
-		<image src="data/img/Medium/NixieTubeLeft.png" id="image-store-Medium-TubeLeft" >
-		<image src="data/img/Medium/NixieTubeMid.png" id="image-store-Medium-TubeMid" >
-		<image src="data/img/Medium/NixieTubeRight.png" id="image-store-Medium-TubeRight" >
-		<image src="data/img/Medium/NixieTubeSingle.png" id="image-store-Medium-TubeSingle" >
-		<image src="data/img/Small/NixieAuthentic.png" id="image-store-Small-Authentic" >
-		<image src="data/img/Small/NixieFontA.png" id="image-store-Small-FontA" >
-		<image src="data/img/Small/NixieFontB.png" id="image-store-Small-FontB" >
-		<image src="data/img/Small/NixieTubeLeft.png" id="image-store-Small-TubeLeft" >
-		<image src="data/img/Small/NixieTubeMid.png" id="image-store-Small-TubeMid" >
-		<image src="data/img/Small/NixieTubeRight.png" id="image-store-Small-TubeRight" >
-	  	<image src="data/img/Small/NixieTubeSingle.png" id="image-store-Small-TubeSingle" > -->
-	</div>
+	<div id="image-store" style="display: none;"></div>
 </main>
-<script>
+<!-- <script>
 	
 	// const shareData = {
 	// 	title: 'Meter Image',
@@ -198,7 +184,7 @@
 		document.getElementById("error-log").prepend(span);
 		// logError('Secure Context', window.isSecureContext);
 	});
-</script>
+</script> -->
 <!--<footer>
 	<p>&copy; trigger_segfault 2020.</p>
 </footer>-->

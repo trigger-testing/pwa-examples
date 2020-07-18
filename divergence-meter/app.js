@@ -1,5 +1,6 @@
 // Generate image asset img elements
-if (document.location.protocol !== "file:") {
+// if (document.location.protocol !== "file:") {
+if (self.location.protocol !== "file:") {
 	var assetNames = [
 		'Authentic',
 		'FontA',
@@ -43,7 +44,8 @@ if (document.location.protocol !== "file:") {
 
 // Registering Service Worker
 if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('/pwa-examples/divergence-meter/sw.js');
+	// navigator.serviceWorker.register('/pwa-examples/divergence-meter/sw.js');
+	navigator.serviceWorker.register('sw.js');
 };
 
 // Requesting permission for Notifications after clicking on the button
@@ -74,26 +76,31 @@ if ('serviceWorker' in navigator) {
 var imagesToLoad = document.querySelectorAll('img[data-src]');
 // console.log(imagesToLoad);
 var loadImages = function(image) {
+	let image2 = new Image();
+	image2.src = image.getAttribute('data-src');
 	image.setAttribute('src', image.getAttribute('data-src'));
 	image.onload = function() {
 		image.removeAttribute('data-src');
+		// if (image.parentElement === document.getElementById("image-store")) {
+		// 	image.style.visibility = 'hidden';
+		// }
 	};
 };
-if ('IntersectionObserver' in window) {
-	var observer = new IntersectionObserver(function(items, observer) {
-		items.forEach(function(item) {
-			if(item.isIntersecting) {
-				loadImages(item.target);
-				observer.unobserve(item.target);
-			}
-		});
-	});
-	imagesToLoad.forEach(function(img) {
-		observer.observe(img);
-	});
-}
-else {
+// if ('IntersectionObserver' in window) {
+// 	var observer = new IntersectionObserver(function(items, observer) {
+// 		items.forEach(function(item) {
+// 			if(item.isIntersecting) {
+// 				loadImages(item.target);
+// 				observer.unobserve(item.target);
+// 			}
+// 		});
+// 	});
+// 	imagesToLoad.forEach(function(img) {
+// 		observer.observe(img);
+// 	});
+// }
+// else {
 	imagesToLoad.forEach(function(img) {
 		loadImages(img);
 	});
-}
+// }

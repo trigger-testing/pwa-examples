@@ -1,6 +1,10 @@
 function logError(kind, ex) {
+	if (typeof ex === "undefined") {
+		ex = "undefined";
+	}
 	let span = document.createElement("p");
-	span.innerText = "[" + kind.toString().toUpperCase() + "]: " + ex.toString();
+	//span.innerText = "[" + kind.toString().toUpperCase() + "]: " + ex.toString();
+	span.innerText = "[" + kind.toString() + "]: " + ex.toString();
 	//document.getElementById("error-log").children.insert(0, span);
 	document.getElementById("error-log").prepend(span);
 }
@@ -437,7 +441,10 @@ try {
 		get textSize() {
 			return new Size(this.cols, this.rows);
 		}
-
+		clearCanvas(canvas) {
+			let ctx = canvas.getContext("2d");
+			ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+		}
 		drawToCanvas(canvas) {
 			// let tubeNames = [];
 			// let fontNames = [];
@@ -470,23 +477,24 @@ try {
 			// });
 			let size = this.calculateDimensions();
 			return new Promise(function(resolve) {
-			this.loadImages().then(function(imageList) {
-				let images = {};
-				for (let i = 0; i < imageList.length; i++) {
-					images[imageList[i].name] = imageList[i];
-				}
-				//new HTMLCanvasElement().getContext("2d")
-				//canvas = canvas as HTMLCanvasElement;
-				canvas.width  = size.width;
-				canvas.height = size.height;
-				let ctx = canvas.getContext("2d");
-				//ctx = new HTMLCanvasElement().getContext("2d");
-				for (let i = 0; i < this.lines.length; i++) {
-					this.drawLine(ctx, i, images);
-				}
-				resolve(this);
-				//ctx.save();
-			}.bind(this));
+				this.loadImages().then(function(imageList) {
+					let images = {};
+					for (let i = 0; i < imageList.length; i++) {
+						images[imageList[i].name] = imageList[i];
+					}
+					//new HTMLCanvasElement().getContext("2d")
+					//canvas = canvas as HTMLCanvasElement;
+					canvas.width  = size.width;
+					canvas.height = size.height;
+					
+					let ctx = canvas.getContext("2d");
+					ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+					for (let i = 0; i < this.lines.length; i++) {
+						this.drawLine(ctx, i, images);
+					}
+					resolve(this);
+					//ctx.save();
+				}.bind(this));
 			}.bind(this));
 			//new Promise().the
 		}
@@ -616,7 +624,23 @@ try {
 	}
 	var drawer = new Drawer(codeInputForm.text.value, Scale.Large, true, new Thickness(0, 0, 0, 0), 0);
 
-	
+	function clearDrawer(e) {
+		logError('Secure Context', window.isSecureContext);
+		logError('Clear drawer');
+
+		document.getElementById("meter-canvas-container").classList.remove("mirrored");
+		meterCanvas.classList.remove("mirrored");
+		meterCanvas.removeAttribute("width");
+		meterCanvas.removeAttribute("height");
+		drawer.clearCanvas(meterCanvas);
+		
+		let image = document.getElementById("meter-canvas-mirror");
+		image.src = "";
+		image.removeAttribute("width");
+		image.removeAttribute("height");
+
+		codeInputForm.downloadButton.disabled = true;
+	}
 	function runDrawer(e) {
 		logError('Secure Context', window.isSecureContext);
 		//https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
@@ -635,7 +659,7 @@ try {
 		//         try {
 					// var image = new Image();
 					let image = document.getElementById("meter-canvas-mirror");
-					let a = document.getElementById("direct-image-download");
+					// let a = document.getElementById("direct-image-download");
 					logError('Secure Context', window.isSecureContext);
 					// var canvas = document.createElement("canvas");
 					// canvas.width  = meterCanvas.width;
@@ -650,14 +674,15 @@ try {
 		image.width = meterCanvas.width;
 		image.height = meterCanvas.height;
 		document.getElementById("meter-canvas-container").classList.add("mirrored");
+		codeInputForm.downloadButton.disabled = false;
 				logError("MIRRORED", "");
 		// a.href = image.src;
-		meterCanvas.toBlob(function (blob) {
-			meterBlob = blob;
-			logError('typeof blob', typeof blob);
-			logError('blob', blob);
-			//logError('typeof blob', typeof blob);
-		}, "image/png");
+		// meterCanvas.toBlob(function (blob) {
+		// 	meterBlob = blob;
+		// 	logError('typeof blob', typeof blob);
+		// 	logError('blob', blob);
+		// 	//logError('typeof blob', typeof blob);
+		// }, "image/png");
 		// document.body.append(image);
 		// image.src = canvas.toDataURL("image/png");
 
@@ -732,7 +757,6 @@ try {
 		console.log('meter-input-form.onsubmit');
 		console.log(e);
 		runDrawer(e);
-		// updateDirectDownload();
 		e.preventDefault();
 	});
 } catch (ex) {

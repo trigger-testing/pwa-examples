@@ -73,11 +73,11 @@ var appShellFiles = [
   '/pwa-examples/divergence-meter/icons/icon-32.png',
   '/pwa-examples/divergence-meter/icons/icon-256.png'
 ];
-var gamesImages = [];
-for (var i = 0; i < games.length; i++) {
-  gamesImages.push('data/img/'+games[i].slug+'.jpg');
-}
-var contentToCache = appShellFiles.concat(gamesImages);
+// var gamesImages = [];
+// for (var i = 0; i < games.length; i++) {
+//   gamesImages.push('data/img/'+games[i].slug+'.jpg');
+// }
+var contentToCache = appShellFiles;//.concat(gamesImages);
 
 // Installing Service Worker
 self.addEventListener('install', function(e) {
@@ -92,6 +92,7 @@ self.addEventListener('install', function(e) {
 
 // Fetching content using Service Worker
 self.addEventListener('fetch', function(e) {
+  console.log('[Service Worker] Fetch');
   e.respondWith(
     caches.match(e.request).then(function(r) {
       console.log('[Service Worker] Fetching resource: '+e.request.url);
