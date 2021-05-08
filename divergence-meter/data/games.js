@@ -620,6 +620,8 @@ try {
 	function convertCanvasToImage(canvas) {
 		var image = new Image();
 		image.src = canvas.toDataURL("image/png");
+                //let anchorDl = document.getElementById("meter-display-dl");
+                //anchorDl.setAttribute('href', image.src);
 		return image;
 	}
 	var drawer = new Drawer(codeInputForm.text.value, Scale.Large, true, new Thickness(0, 0, 0, 0), 0);
@@ -638,6 +640,9 @@ try {
 		image.src = "";
 		image.removeAttribute("width");
 		image.removeAttribute("height");
+
+                let anchorDl = document.getElementById("meter-display-dl");
+                anchorDl.removeAttribute('href');
 
 		codeInputForm.downloadButton.disabled = true;
 	}
@@ -674,6 +679,8 @@ try {
 		image.width = meterCanvas.width;
 		image.height = meterCanvas.height;
 		document.getElementById("meter-canvas-container").classList.add("mirrored");
+                let anchorDl = document.getElementById("meter-display-dl");
+                anchorDl.setAttribute('href', image.src);
 		codeInputForm.downloadButton.disabled = false;
 				logError("MIRRORED", "");
 		// a.href = image.src;
