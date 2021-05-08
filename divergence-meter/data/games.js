@@ -641,9 +641,9 @@ try {
 		image.removeAttribute("width");
 		image.removeAttribute("height");
 
-                let anchorDl = document.getElementById("meter-display-dl");
-                anchorDl.removeAttribute('href');
-                anchorDl.removeAttribute('download');
+                //let anchorDl = document.getElementById("meter-display-dl");
+                //anchorDl.removeAttribute('href');
+                //anchorDl.removeAttribute('download');
 
 		codeInputForm.downloadButton.disabled = true;
 	}
@@ -680,9 +680,9 @@ try {
 		image.width = meterCanvas.width;
 		image.height = meterCanvas.height;
 		document.getElementById("meter-canvas-container").classList.add("mirrored");
-                let anchorDl = document.getElementById("meter-display-dl");
-                anchorDl.setAttribute('href', image.src);
-                anchorDl.setAttribute('download', "divmeter.png");
+                //let anchorDl = document.getElementById("meter-display-dl");
+                //anchorDl.setAttribute('href', image.src);
+                //anchorDl.setAttribute('download', "divmeter.png");
 		codeInputForm.downloadButton.disabled = false;
 				logError("MIRRORED", "");
 		// a.href = image.src;
